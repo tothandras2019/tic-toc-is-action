@@ -1,0 +1,24 @@
+.table-container {
+  width: 70%;
+  height: 70%;
+  background-color: rgb(10, 31, 64);
+  height: fit-content;
+  width: fit-content;
+  padding: 30px;
+  box-sizing: border-box;
+}
+.table-container .table {
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+}
+.table-container .table button {
+  width: 100%;
+  height: 100%;
+  background-color: grey;
+  background-color: rgb(131, 131, 66);
+  border: none;
+}
+.table-container .table button:hover {
+  background-color: rgb(92, 92, 51);
+}/*# sourceMappingURL=table-component.css.map */

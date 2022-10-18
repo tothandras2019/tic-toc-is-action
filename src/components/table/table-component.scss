@@ -1,0 +1,27 @@
+@import './../../settings/style-settings.scss';
+.table-container {
+  width: 70%;
+  height: 70%;
+  background-color: $table-background-color;
+  height: fit-content;
+  width: fit-content;
+  padding: 30px;
+  box-sizing: border-box;
+  // display: grid;
+  // grid-template-columns: repeat(3, 70px);
+  .table {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    button {
+      width: 100%;
+      height: 100%;
+      background-color: grey;
+      background-color: $table-color;
+      border: none;
+      &:hover {
+        background-color: $table-hover-color;
+      }
+    }
+  }
+}
