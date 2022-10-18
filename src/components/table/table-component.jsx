@@ -1,5 +1,6 @@
 import './table-component.css'
 import { useEffect, useState } from 'react'
+import { Field } from '../field/field-component'
 
 export const Table = ({ size }) => {
   const [table, setTable] = useState(null)
@@ -11,20 +12,25 @@ export const Table = ({ size }) => {
     if (!size) return
     const placeholder = []
     for (let i = 1; i <= size; i++) {
-      for (let j = 1; j <= size; j++) placeholder.push({ index: `${i}-${j}`, val: '' })
+      for (let j = 1; j <= size; j++) placeholder.push({ index: `${i}-${j}`, mark: '' })
     }
 
     setTable(() => placeholder)
-    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 70px)` }))
+    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 60px)` }))
 
     return () => {}
   }, [size])
 
   useEffect(() => {
+    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 60px)`, backgroundColor: `${isOpointment ? '#0a1f40' : '#6a0606'}` }))
+  }, [isOpointment])
+
+  useEffect(() => {
     if (!fieldId) return
     const findClickedField = table.map((field) => {
       if (field.index === fieldId) {
-        field.val = isOpointment ? '❌' : '🔵'
+        field.mark = isOpointment ? '🔵' : '❌'
+        setIsOpointment(() => !isOpointment)
         return field
       }
       return field
@@ -36,17 +42,17 @@ export const Table = ({ size }) => {
   const handleFieldClick = (event) => {
     const fieldID = event.target.id
     setFieldId(fieldID)
-    setIsOpointment(() => !isOpointment)
   }
+
+  const checkRow = (fields) => {}
+  const checkColumn = (fields) => {}
+  const checkDiagonalLeftToRightButton = (fields) => {}
+  const checkDiagonalRightToLeftButton = (fields) => {}
 
   return (
     <div className='table-container' style={style}>
       {table?.map((tableField, i) => (
-        <div key={`${i}`} className={`table`}>
-          <button id={`${tableField.index}`} onClick={handleFieldClick}>
-            {tableField.val}
-          </button>
-        </div>
+        <Field key={i} tableField={tableField} handleFieldClick={handleFieldClick} />
       ))}
     </div>
   )
