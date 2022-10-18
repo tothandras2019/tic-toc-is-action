@@ -1,6 +1,5 @@
 import './table-component.css'
 import { useEffect, useState } from 'react'
-import { fieldEnds } from 'tar'
 
 export const Table = ({ size }) => {
   const [table, setTable] = useState(null)
@@ -22,42 +21,33 @@ export const Table = ({ size }) => {
   }, [size])
 
   useEffect(() => {
-    // const findClickedField = table.map(({ index, val }) => {
-    //   if (index === fieldID) {
-    //     return (val = isOpointment ? '❌' : '🔵')
-    //   }
-    // })
+    if (!fieldId) return
+    const findClickedField = table.map((field) => {
+      if (field.index === fieldId) {
+        field.val = isOpointment ? '❌' : '🔵'
+        return field
+      }
+      return field
+    })
+    setTable(() => findClickedField)
     return () => {}
   }, [fieldId])
 
   const handleFieldClick = (event) => {
-    console.log(event.target.id)
     const fieldID = event.target.id
     setFieldId(fieldID)
-    // setIsOpointment(() => !isOpointment)
+    setIsOpointment(() => !isOpointment)
   }
 
   return (
     <div className='table-container' style={style}>
-      {/* {table?.map((val, i) => (
+      {table?.map((tableField, i) => (
         <div key={`${i}`} className={`table`}>
-          <button id={`${i}`} onClick={handleFieldClick}>
-            {isOpointment ? '❌' : '🔵'}
+          <button id={`${tableField.index}`} onClick={handleFieldClick}>
+            {tableField.val}
           </button>
         </div>
-      ))} */}
+      ))}
     </div>
   )
 }
-
-// {
-//   table?.map((_, i) => {
-//     return table.map((_, j) => (
-//       <div key={`${i}-${j}`} className={`table`}>
-//         <button id={`${i}-${j}`} onClick={handleFieldClick}>
-//           {isOpointment ? '❌' : '🔵'}
-//         </button>
-//       </div>
-//     ))
-//   })
-// }

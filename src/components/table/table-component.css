@@ -18,6 +18,10 @@
   background-color: grey;
   background-color: rgb(131, 131, 66);
   border: none;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .table-container .table button:hover {
   background-color: rgb(92, 92, 51);
