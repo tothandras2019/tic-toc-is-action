@@ -15,7 +15,7 @@ export const Navigation = () => {
   const [blueNameInput, setBlueNameInput] = useState(null)
   const [redNameInput, setRedNameInput] = useState(null)
   const [tableSize, setTableSize] = useState('')
-  const { size, setSize } = useContext(TableSizeContext)
+  const { setSize } = useContext(TableSizeContext)
   const { parties, setParties } = useContext(PartyNamesContext)
 
   useEffect(() => {
@@ -35,8 +35,8 @@ export const Navigation = () => {
   }, [tableSize])
 
   const handleChange = (event) => {
-    const size = event.target.value
-    setTableSize(size)
+    const sizeFromInput = event.target.value
+    setTableSize(sizeFromInput)
   }
 
   return (

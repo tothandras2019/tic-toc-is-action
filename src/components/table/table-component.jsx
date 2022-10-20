@@ -1,12 +1,13 @@
 import './table-component.css'
 import { useEffect, useState, useContext } from 'react'
-import { OpponentContexts, ActualTurnContext } from '../contexts/opoinment-contexts'
+import { OpponentContexts, ActualTurnContext, TableSizeContext } from '../contexts/opoinment-contexts'
 
 import { Field } from '../field/field-component'
 import { WinnerHelper } from '../../configs/config'
 
-export const Table = ({ size }) => {
-  const WinnerHelpArray = WinnerHelper(4)
+export const Table = ({}) => {
+  const burnedTableSize = 3
+  const [helper, setHelper] = useState('')
 
   const [table, setTable] = useState(null)
   const [style, setStyle] = useState({})
@@ -17,8 +18,13 @@ export const Table = ({ size }) => {
 
   const { step, setStep } = useContext(OpponentContexts)
   const { turn, setTurn } = useContext(ActualTurnContext)
+  const { size } = useContext(TableSizeContext)
 
-  // placeholder.push({ index: `${i}-${j}`, mark: '' })
+  useEffect(() => {
+    setHelper(WinnerHelper(size))
+
+    return () => {}
+  }, [size])
 
   useEffect(() => {
     if (!size) return
@@ -61,7 +67,7 @@ export const Table = ({ size }) => {
 
   useEffect(() => {
     setStep((prev) => ({ ...prev, blue: bluePartySteps }))
-    CheckSteps(bluePartySteps)
+    CheckSteps(bluePartySteps, helper)
 
     return () => {}
   }, [bluePartySteps])
@@ -92,7 +98,9 @@ export const Table = ({ size }) => {
   )
 }
 
-const CheckSteps = (fields) => {
+const CheckSteps = (fields, help) => {
+  if (!help) return
+
   const checkRow = (fields) => {
     const sorted = fields.sort((a, b) => {
       if (a[0] < b[0]) return -1
@@ -103,6 +111,14 @@ const CheckSteps = (fields) => {
       }
       return 0
     })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    console.log(help)
+    console.log(str)
+    const isContains = help.some((lane) => lane === str)
+    //TODO: set winner!!!!
+    console.log(isContains)
   }
   const checkColumn = (fields) => {
     const sorted = fields.sort((a, b) => {

@@ -18,7 +18,7 @@ function getRowHelper(sameInALine) {
     }
     markInALineRow.push(nextColumnt)
   }
-
+  console.log(markInALineRow)
   return markInALineRow
 }
 function getColumnHelper(sameInALine) {

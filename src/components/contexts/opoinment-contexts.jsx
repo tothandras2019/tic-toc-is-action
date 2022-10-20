@@ -33,3 +33,10 @@ export const PartyNamesContextProvider = ({ children }) => {
   })
   return <PartyNamesContext.Provider value={{ parties, setParties }}>{children}</PartyNamesContext.Provider>
 }
+
+//values blue: won/loose/egal/''
+export const WinnerContext = createContext({ blue: '', red: '' })
+export const WinnerContextProvider = ({ children }) => {
+  const [winner, setWinner] = useState({ blue: '', red: '' })
+  return <WinnerContext.Provider value={{ winner, setWinner }}>{children}</WinnerContext.Provider>
+}
