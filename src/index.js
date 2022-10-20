@@ -3,16 +3,25 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { OpponentContextsProvider, TableSizeContextProvider } from './components/contexts/opoinment-contexts'
+import {
+  OpponentContextsProvider,
+  TableSizeContextProvider,
+  PartyNamesContextProvider,
+  ActualTurnContextProvider,
+} from './components/contexts/opoinment-contexts'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <TableSizeContextProvider>
-      <OpponentContextsProvider>
-        <App />
-      </OpponentContextsProvider>
-    </TableSizeContextProvider>
+    <ActualTurnContextProvider>
+      <PartyNamesContextProvider>
+        <TableSizeContextProvider>
+          <OpponentContextsProvider>
+            <App />
+          </OpponentContextsProvider>
+        </TableSizeContextProvider>
+      </PartyNamesContextProvider>
+    </ActualTurnContextProvider>
   </React.StrictMode>,
 )
 

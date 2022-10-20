@@ -1,6 +1,6 @@
 import './navigation-component.css'
 import { useEffect, useState, useContext } from 'react'
-import { TableSizeContext } from './../contexts/opoinment-contexts.jsx'
+import { TableSizeContext, PartyNamesContext } from './../contexts/opoinment-contexts.jsx'
 import Box from '@mui/material/Box'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
@@ -12,15 +12,21 @@ import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 
 export const Navigation = () => {
-  const [blueName, setBlueName] = useState(null)
-  const [redName, setRedName] = useState(null)
+  const [blueNameInput, setBlueNameInput] = useState(null)
+  const [redNameInput, setRedNameInput] = useState(null)
   const [tableSize, setTableSize] = useState('')
   const { size, setSize } = useContext(TableSizeContext)
+  const { parties, setParties } = useContext(PartyNamesContext)
 
   useEffect(() => {
-    if (!(blueName || redName)) return
+    if (!(blueNameInput || redNameInput)) return
+    setParties(() => ({
+      blueName: blueNameInput,
+      redName: redNameInput,
+    }))
+
     return () => {}
-  }, [blueName, redName])
+  }, [blueNameInput, redNameInput])
 
   useEffect(() => {
     if (!tableSize) return
@@ -68,7 +74,7 @@ export const Navigation = () => {
           <TextField
             id='input-with-icon-textfield'
             label='Blue party name'
-            onChange={(event) => setBlueName(() => event.target.value)}
+            onChange={(event) => setBlueNameInput(() => event.target.value)}
             sx={{
               backgroundColor: '#154066;',
               input: { color: 'white' },
@@ -94,7 +100,7 @@ export const Navigation = () => {
           <TextField
             id='input-with-icon-textfield'
             label='Red party name'
-            onChange={(event) => setRedName(() => event.target.value)}
+            onChange={(event) => setRedNameInput(() => event.target.value)}
             sx={{
               backgroundColor: '#154066;',
               input: { color: 'white' },

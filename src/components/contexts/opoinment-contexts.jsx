@@ -10,8 +10,26 @@ export const OpponentContextsProvider = ({ children }) => {
   return <OpponentContexts.Provider value={{ step, setStep }}>{children}</OpponentContexts.Provider>
 }
 
+export const ActualTurnContext = createContext('blue')
+export const ActualTurnContextProvider = ({ children }) => {
+  const [turn, setTurn] = useState('blue')
+  return <ActualTurnContext.Provider value={{ turn, setTurn }}>{children}</ActualTurnContext.Provider>
+}
+
 export const TableSizeContext = createContext('')
 export const TableSizeContextProvider = ({ children }) => {
   const [size, setSize] = useState(3)
   return <TableSizeContext.Provider value={{ size, setSize }}>{children}</TableSizeContext.Provider>
+}
+
+export const PartyNamesContext = createContext({
+  blueName: '',
+  redName: '',
+})
+export const PartyNamesContextProvider = ({ children }) => {
+  const [parties, setParties] = useState({
+    blueName: '',
+    redName: '',
+  })
+  return <PartyNamesContext.Provider value={{ parties, setParties }}>{children}</PartyNamesContext.Provider>
 }

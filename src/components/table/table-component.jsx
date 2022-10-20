@@ -1,6 +1,6 @@
 import './table-component.css'
 import { useEffect, useState, useContext } from 'react'
-import { OpponentContexts } from '../contexts/opoinment-contexts'
+import { OpponentContexts, ActualTurnContext } from '../contexts/opoinment-contexts'
 
 import { Field } from '../field/field-component'
 import { WinnerHelper } from '../../configs/config'
@@ -16,6 +16,7 @@ export const Table = ({ size }) => {
   const [bluePartySteps, setBluePartySteps] = useState('')
 
   const { step, setStep } = useContext(OpponentContexts)
+  const { turn, setTurn } = useContext(ActualTurnContext)
 
   useEffect(() => {
     if (!size) return
@@ -41,8 +42,10 @@ export const Table = ({ size }) => {
         field.mark = isOpointment ? '🔵' : '❌'
         if (isOpointment) {
           setBluePartySteps((prevSteps) => (prevSteps += fieldId))
+          setTurn('red')
         } else {
           setRedPartySteps((prevSteps) => (prevSteps += fieldId))
+          setTurn('blue')
         }
 
         setIsOpointment(() => !isOpointment)

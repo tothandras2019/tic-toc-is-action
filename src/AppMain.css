@@ -16,6 +16,12 @@ body::-webkit-scrollbar {
   height: 100vh;
   background-color: #283334;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+}
+.App section h3 {
+  margin: 40px 0 50px;
+  font-size: 35px;
+  color: rgb(223, 210, 193);
 }/*# sourceMappingURL=AppMain.css.map */
