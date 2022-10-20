@@ -1,4 +1,13 @@
 @import './settings/style-settings.scss';
+
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .App {
   nav {
     width: 100%;

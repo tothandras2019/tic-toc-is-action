@@ -1,0 +1,21 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  color: white;
+  h1 {
+    font-size: 36px;
+  }
+
+  .user-menu-item {
+    width: 20%;
+    min-width: 318px;
+    display: flex;
+    justify-content: space-between;
+    form {
+      display: flex;
+    }
+  }
+}
