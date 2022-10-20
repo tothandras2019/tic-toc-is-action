@@ -10,6 +10,7 @@ body {
 
 .App {
   nav {
+    position: fixed;
     width: 100%;
     height: 8vh;
     background-color: $nav-color;
@@ -18,16 +19,32 @@ body {
   section {
     width: 100%;
     height: 100vh;
+    padding-top: 8vh;
+    box-sizing: border-box;
     background-color: $main-color;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
 
-    h3 {
-      margin: 40px 0 50px;
-      font-size: 35px;
-      color: $primary;
+    .message-container {
+      padding: 10px 0;
+      height: 305px;
+
+      h3 {
+        margin: 10px 0 20px;
+        font-size: 45px;
+        letter-spacing: 1.7px;
+        color: $primary;
+        text-align: center;
+      }
+      h4 {
+        font-size: 25px;
+        color: $primary;
+        text-align: center;
+        line-height: 1.6;
+        letter-spacing: 1px;
+      }
     }
   }
 }

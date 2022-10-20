@@ -7,6 +7,7 @@ body::-webkit-scrollbar {
 }
 
 .App nav {
+  position: fixed;
   width: 100%;
   height: 8vh;
   background-color: #100e1e;
@@ -14,14 +15,29 @@ body::-webkit-scrollbar {
 .App section {
   width: 100%;
   height: 100vh;
+  padding-top: 8vh;
+  box-sizing: border-box;
   background-color: #283334;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
-.App section h3 {
-  margin: 40px 0 50px;
-  font-size: 35px;
+.App section .message-container {
+  padding: 10px 0;
+  height: 305px;
+}
+.App section .message-container h3 {
+  margin: 10px 0 20px;
+  font-size: 45px;
+  letter-spacing: 1.7px;
   color: rgb(223, 210, 193);
+  text-align: center;
+}
+.App section .message-container h4 {
+  font-size: 25px;
+  color: rgb(223, 210, 193);
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 1px;
 }/*# sourceMappingURL=AppMain.css.map */

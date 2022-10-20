@@ -11,18 +11,20 @@ export const Table = ({ size }) => {
   const [table, setTable] = useState(null)
   const [style, setStyle] = useState({})
   const [isOpointment, setIsOpointment] = useState(true)
-  const [fieldId, setFieldId] = useState(null)
-  const [redPartySteps, setRedPartySteps] = useState('')
-  const [bluePartySteps, setBluePartySteps] = useState('')
+  const [fieldId, setFieldId] = useState([])
+  const [redPartySteps, setRedPartySteps] = useState([])
+  const [bluePartySteps, setBluePartySteps] = useState([])
 
   const { step, setStep } = useContext(OpponentContexts)
   const { turn, setTurn } = useContext(ActualTurnContext)
+
+  // placeholder.push({ index: `${i}-${j}`, mark: '' })
 
   useEffect(() => {
     if (!size) return
     const placeholder = []
     for (let i = 1; i <= size; i++) {
-      for (let j = 1; j <= size; j++) placeholder.push({ index: `${i}-${j}`, mark: '' })
+      for (let j = 1; j <= size; j++) placeholder.push({ index: [i, j], mark: '' })
     }
 
     setTable(() => placeholder)
@@ -36,22 +38,22 @@ export const Table = ({ size }) => {
   }, [isOpointment])
 
   useEffect(() => {
-    if (!fieldId) return
-    const findClickedField = table.map((field) => {
-      if (field.index === fieldId) {
-        field.mark = isOpointment ? '🔵' : '❌'
+    if (fieldId.length === 0) return
+    const findClickedField = table.map((fields) => {
+      if (fields.index[0] === fieldId[0] && fields.index[1] === fieldId[1]) {
+        fields.mark = isOpointment ? '🔵' : '❌'
         if (isOpointment) {
-          setBluePartySteps((prevSteps) => (prevSteps += fieldId))
+          setBluePartySteps((prevSteps) => [...prevSteps, fieldId])
           setTurn('red')
         } else {
-          setRedPartySteps((prevSteps) => (prevSteps += fieldId))
+          setRedPartySteps((prevSteps) => [...prevSteps, fieldId])
           setTurn('blue')
         }
 
         setIsOpointment(() => !isOpointment)
-        return field
+        return fields
       }
-      return field
+      return fields
     })
     setTable(() => findClickedField)
     return () => {}
@@ -59,7 +61,7 @@ export const Table = ({ size }) => {
 
   useEffect(() => {
     setStep((prev) => ({ ...prev, blue: bluePartySteps }))
-    // console.log(step)
+    CheckSteps(bluePartySteps)
 
     return () => {}
   }, [bluePartySteps])
@@ -70,8 +72,10 @@ export const Table = ({ size }) => {
   }, [redPartySteps])
 
   const handleFieldClick = (event) => {
-    const fieldID = event.target.id
-    setFieldId(fieldID)
+    const row = parseInt(event.target.dataset.row)
+    const column = parseInt(event.target.dataset.column)
+
+    setFieldId(() => [row, column])
   }
 
   const checkRow = (fields) => {}
@@ -86,4 +90,48 @@ export const Table = ({ size }) => {
       ))}
     </div>
   )
+}
+
+const CheckSteps = (fields) => {
+  const checkRow = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[0] < b[0]) return -1
+      if (a[0] > b[0]) return 1
+      if ((a[0] = b[0])) {
+        if (a[1] < b[1]) return -1
+        if (a[1] > b[1]) return 1
+      }
+      return 0
+    })
+  }
+  const checkColumn = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[1] < b[1]) return -1
+      if (a[1] > b[1]) return 1
+      if ((a[1] = b[1])) {
+        if (a[0] < b[0]) return -1
+        if (a[0] > b[0]) return 1
+      }
+      return 0
+    })
+  }
+  const checkDiagonalLeftToRightButton = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[0] < b[0] && a[1] < b[1]) return -1
+      if (a[0] > b[0] && a[1] > b[1]) return 1
+      return 0
+    })
+  }
+  const checkDiagonalRightToLeftButton = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[0] < b[0] && a[1] > b[1]) return -1
+      if (a[0] > b[0] && a[1] < b[1]) return 1
+      return 0
+    })
+  }
+
+  checkRow(fields)
+  checkColumn(fields)
+  checkDiagonalLeftToRightButton(fields)
+  checkDiagonalRightToLeftButton(fields)
 }

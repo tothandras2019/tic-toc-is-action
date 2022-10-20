@@ -16,13 +16,13 @@ function App() {
     <div className='App'>
       <Navigation />
       <section>
-        <div>
+        <div className='message-container'>
           {!(parties.blueName && parties.redName) ? (
             <>
               <h3>Welcome Gamers!</h3>
               <h4>
                 Choose table size and set your names! <br />
-                Blue start!
+                Blue starts!
               </h4>
             </>
           ) : (
