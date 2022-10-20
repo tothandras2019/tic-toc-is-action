@@ -11,7 +11,7 @@ nav h1 {
 }
 nav .user-menu-item {
   width: 20%;
-  min-width: 318px;
+  min-width: 500px;
   display: flex;
   justify-content: space-between;
 }

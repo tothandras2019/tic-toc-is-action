@@ -1,26 +1,70 @@
 import './navigation-component.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { TableSizeContext } from './../contexts/opoinment-contexts.jsx'
 import Box from '@mui/material/Box'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
 import TextField from '@mui/material/TextField'
 import AccountCircle from '@mui/icons-material/AccountCircle'
 import Input from '@mui/material/Input'
 import InputAdornment from '@mui/material/InputAdornment'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
 
 export const Navigation = () => {
   const [blueName, setBlueName] = useState(null)
   const [redName, setRedName] = useState(null)
+  const [tableSize, setTableSize] = useState('')
+  const { size, setSize } = useContext(TableSizeContext)
 
   useEffect(() => {
     if (!(blueName || redName)) return
-    console.log(blueName, redName)
     return () => {}
   }, [blueName, redName])
+
+  useEffect(() => {
+    if (!tableSize) return
+    setSize(() => tableSize)
+    return () => {}
+  }, [tableSize])
+
+  const handleChange = (event) => {
+    const size = event.target.value
+    setTableSize(size)
+  }
 
   return (
     <nav>
       <h1>Tic-Toc</h1>
       <div className='user-menu-item'>
-        <Box component='form' sx={{ '& > :not(style)': { m: 1, width: '19ch' } }} noValidate autoComplete='off'>
+        <Box component='form' sx={{ '& > :not(style)': { m: 1, width: '18ch' } }} noValidate autoComplete='off'>
+          <FormControl fullWidth>
+            <InputLabel id='demo-simple-select-label'>Size</InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={tableSize}
+              sx={{
+                backgroundColor: '#154066;',
+                input: { color: 'white' },
+                label: {
+                  color: '#184fbd',
+                  fontWeight: '700',
+                  fontSize: '20px',
+                  '&.Mui-focused': {
+                    color: '#184fbd',
+                  },
+                },
+                fontSize: '10',
+              }}
+              label='Size'
+              onChange={handleChange}
+            >
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={10}>10</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             id='input-with-icon-textfield'
             label='Blue party name'

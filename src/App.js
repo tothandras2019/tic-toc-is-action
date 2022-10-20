@@ -4,11 +4,12 @@ import './AppMain.css'
 import './Reset.css'
 import { useState, useContext } from 'react'
 import { Table } from './components/table/table-component'
-import { OpponentContexts } from './components/contexts/opoinment-contexts'
+import { TableSizeContext } from './components/contexts/opoinment-contexts'
 import { Navigation } from './components/navigation/navigation-component'
 
 function App() {
-  const size = 4
+  const { size, setSize } = useContext(TableSizeContext)
+
   return (
     <div className='App'>
       <Navigation />
