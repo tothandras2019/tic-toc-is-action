@@ -67,13 +67,16 @@ export const Table = ({}) => {
 
   useEffect(() => {
     setStep((prev) => ({ ...prev, blue: bluePartySteps }))
-    CheckSteps(bluePartySteps, helper)
+    const isBlueWon = CheckSteps(bluePartySteps, helper)
+    console.log('Blue WON', isBlueWon)
 
     return () => {}
   }, [bluePartySteps])
 
   useEffect(() => {
     setStep((prev) => ({ ...prev, red: redPartySteps }))
+    const isRedWon = CheckSteps(redPartySteps, helper)
+    console.log('Red Won', isRedWon)
     return () => {}
   }, [redPartySteps])
 
@@ -83,11 +86,6 @@ export const Table = ({}) => {
 
     setFieldId(() => [row, column])
   }
-
-  const checkRow = (fields) => {}
-  const checkColumn = (fields) => {}
-  const checkDiagonalLeftToRightButton = (fields) => {}
-  const checkDiagonalRightToLeftButton = (fields) => {}
 
   return (
     <div className='table-container' style={style}>
@@ -114,11 +112,12 @@ const CheckSteps = (fields, help) => {
 
     let str = ``
     str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
     console.log(help)
     console.log(str)
-    const isContains = help.some((lane) => lane === str)
-    //TODO: set winner!!!!
-    console.log(isContains)
+
+    return isContains
   }
   const checkColumn = (fields) => {
     const sorted = fields.sort((a, b) => {
@@ -130,6 +129,12 @@ const CheckSteps = (fields, help) => {
       }
       return 0
     })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
+    return isContains
   }
   const checkDiagonalLeftToRightButton = (fields) => {
     const sorted = fields.sort((a, b) => {
@@ -137,6 +142,12 @@ const CheckSteps = (fields, help) => {
       if (a[0] > b[0] && a[1] > b[1]) return 1
       return 0
     })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
+    return isContains
   }
   const checkDiagonalRightToLeftButton = (fields) => {
     const sorted = fields.sort((a, b) => {
@@ -144,10 +155,18 @@ const CheckSteps = (fields, help) => {
       if (a[0] > b[0] && a[1] < b[1]) return 1
       return 0
     })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
+    return isContains
   }
 
-  checkRow(fields)
-  checkColumn(fields)
-  checkDiagonalLeftToRightButton(fields)
-  checkDiagonalRightToLeftButton(fields)
+  const rowContains = checkRow(fields)
+  const columnContains = checkColumn(fields)
+  const leftToRightButtonContains = checkDiagonalLeftToRightButton(fields)
+  const rigthToLeftButtonContains = checkDiagonalRightToLeftButton(fields)
+
+  return rowContains || columnContains || leftToRightButtonContains || rigthToLeftButtonContains
 }
