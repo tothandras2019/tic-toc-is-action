@@ -12,7 +12,10 @@ export const Table = ({}) => {
   const [table, setTable] = useState(null)
   const [style, setStyle] = useState({})
   const [isOpointment, setIsOpointment] = useState(true)
+
   const [fieldId, setFieldId] = useState([])
+  const [tempFieldId, setTempFieldId] = useState([])
+
   const [redPartySteps, setRedPartySteps] = useState([])
   const [bluePartySteps, setBluePartySteps] = useState([])
 
@@ -111,7 +114,10 @@ const CheckSteps = (fields, help) => {
     })
 
     let str = ``
+    let tmpStr = ''
     str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    tmpStr = sorted.map(([r, c]) => `${r}-${c}`).join(',')
+    console.log(tmpStr)
     const isContains = help.some((lane) => lane === str)
 
     console.log(help)
