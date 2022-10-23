@@ -3,11 +3,12 @@ import { useEffect, useState, useContext } from 'react'
 import { OpponentContexts, ActualTurnContext, TableSizeContext } from '../contexts/opoinment-contexts'
 
 import { Field } from '../field/field-component'
-import { WinnerHelper } from '../../configs/config'
+import { WinnerHelper, WinnerHelper_temp } from '../../configs/config'
 
 export const Table = ({}) => {
   const burnedTableSize = 3
   const [helper, setHelper] = useState('')
+  const [helperTemp, setHelperTemp] = useState('')
 
   const [table, setTable] = useState(null)
   const [style, setStyle] = useState({})
@@ -25,6 +26,7 @@ export const Table = ({}) => {
 
   useEffect(() => {
     setHelper(WinnerHelper(size))
+    setHelperTemp(WinnerHelper_temp(size))
 
     return () => {}
   }, [size])
@@ -71,7 +73,9 @@ export const Table = ({}) => {
   useEffect(() => {
     setStep((prev) => ({ ...prev, blue: bluePartySteps }))
     const isBlueWon = CheckSteps(bluePartySteps, helper)
-    console.log('Blue WON', isBlueWon)
+
+    const isBlueWon_temp = CheckSteps_temp(bluePartySteps, helperTemp)
+    console.log('Blue WON', isBlueWon_temp)
 
     return () => {}
   }, [bluePartySteps])
@@ -79,7 +83,10 @@ export const Table = ({}) => {
   useEffect(() => {
     setStep((prev) => ({ ...prev, red: redPartySteps }))
     const isRedWon = CheckSteps(redPartySteps, helper)
-    console.log('Red Won', isRedWon)
+
+    const isRedWon_temp = CheckSteps_temp(redPartySteps, helperTemp)
+    console.log('Red Won', isRedWon_temp)
+
     return () => {}
   }, [redPartySteps])
 
@@ -97,6 +104,89 @@ export const Table = ({}) => {
       ))}
     </div>
   )
+}
+
+const CheckSteps_temp = (fields, help) => {
+  if (!help) return
+  const sameMarkInALane = 3
+
+  const checkRow = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[0] < b[0]) return -1
+      if (a[0] > b[0]) return 1
+      if ((a[0] = b[0])) {
+        if (a[1] < b[1]) return -1
+        if (a[1] > b[1]) return 1
+      }
+      return 0
+    })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join(',')
+    const isContains = help.some((lane) => lane === str)
+
+    const len = str.length
+    const final = len - sameMarkInALane
+    let lanes = []
+    for (let i = 0; i < final; i++) {
+      for (let j = 0; j < len; j++) {}
+    }
+
+    console.log(help)
+    console.log(str)
+
+    return isContains
+  }
+  const checkColumn = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[1] < b[1]) return -1
+      if (a[1] > b[1]) return 1
+      if ((a[1] = b[1])) {
+        if (a[0] < b[0]) return -1
+        if (a[0] > b[0]) return 1
+      }
+      return 0
+    })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
+    return isContains
+  }
+  const checkDiagonalLeftToRightButton = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[0] < b[0] && a[1] < b[1]) return -1
+      if (a[0] > b[0] && a[1] > b[1]) return 1
+      return 0
+    })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
+    return isContains
+  }
+  const checkDiagonalRightToLeftButton = (fields) => {
+    const sorted = fields.sort((a, b) => {
+      if (a[0] < b[0] && a[1] > b[1]) return -1
+      if (a[0] > b[0] && a[1] < b[1]) return 1
+      return 0
+    })
+
+    let str = ``
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    const isContains = help.some((lane) => lane === str)
+
+    return isContains
+  }
+
+  const rowContains = checkRow(fields)
+  const columnContains = checkColumn(fields)
+  const leftToRightButtonContains = checkDiagonalLeftToRightButton(fields)
+  const rigthToLeftButtonContains = checkDiagonalRightToLeftButton(fields)
+
+  return rowContains || columnContains || leftToRightButtonContains || rigthToLeftButtonContains
 }
 
 const CheckSteps = (fields, help) => {
@@ -117,11 +207,7 @@ const CheckSteps = (fields, help) => {
     let tmpStr = ''
     str = sorted.map(([r, c]) => `${r}-${c}`).join('')
     tmpStr = sorted.map(([r, c]) => `${r}-${c}`).join(',')
-    console.log(tmpStr)
     const isContains = help.some((lane) => lane === str)
-
-    console.log(help)
-    console.log(str)
 
     return isContains
   }

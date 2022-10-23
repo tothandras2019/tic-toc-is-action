@@ -2,8 +2,6 @@
  * @param tablesize
  * */
 export const WinnerHelper = (sameInALine) => {
-  getRowHelper_temp(sameInALine)
-
   const RowHelper = getRowHelper(sameInALine)
   const ColumntHelper = getColumnHelper(sameInALine)
   const LeftToButtomRightHelper = getLeftToButtomRightHelper(sameInALine)
@@ -13,94 +11,106 @@ export const WinnerHelper = (sameInALine) => {
   return [...RowHelper, ...ColumntHelper, ...LeftToButtomRightHelper, ...RightToButtomLeftHelper]
 }
 
+export const WinnerHelper_temp = (sameInALine) => {
+  const row = getRowHelper_temp(sameInALine)
+  const column = getColumnHelper_temp(sameInALine)
+  const leftToRightDiagonal = getLeftToButtomRightHelper_temp(sameInALine)
+  const rightToLeftDiagonal = getRightToLeftBottomHelper_temp(sameInALine)
+
+  return [...row, ...column, ...leftToRightDiagonal, ...rightToLeftDiagonal]
+}
+
 function getRowHelper_temp(sameInALine) {
-  let markInALaneRow = []
+  let lane = []
   for (let row = 1; row <= sameInALine; row++) {
-    let tempNextColumnt = []
+    let nextRow = []
     for (let column = 1; column <= sameInALine; column++) {
-      tempNextColumnt.push(`${row}-${column}`)
+      nextRow.push(`${row}-${column}`)
     }
-    markInALaneRow.push(tempNextColumnt.join(','))
+    lane.push(nextRow.join(','))
   }
-  console.log('temp:', markInALaneRow)
-  return markInALaneRow
+  console.log('row:', lane)
+  return lane
 }
 
 function getColumnHelper_temp(sameInALine) {
-  let markInALineColumn = []
+  let lane = []
   for (let row = 1; row <= sameInALine; row++) {
-    let nextRow = ''
+    let nextRow = []
     for (let column = 1; column <= sameInALine; column++) {
-      nextRow += `${column}-${row}`
+      nextRow.push(`${column}-${row}`)
     }
-    markInALineColumn.push(nextRow)
+    lane.push(nextRow.join(','))
   }
-
-  return markInALineColumn
+  console.log('column:', lane)
+  return lane
 }
 
 function getLeftToButtomRightHelper_temp(sameInALine) {
-  let markInALineCenter = []
+  let lane = []
 
   //center left to right diagonal
-  let nextRow = ''
+  let nextRow = []
   for (let num = 1; num <= sameInALine; num++) {
-    nextRow += `${num}-${num}`
+    nextRow.push(`${num}-${num}`)
   }
-  markInALineCenter.push(nextRow)
+  lane.push(nextRow.join(','))
 
   //center left to right diagonal ++ rigth
-  nextRow = ''
-  for (let num = 1; num <= sameInALine; num++) {
-    nextRow += `${num}-${num + 1}`
+  nextRow = []
+  for (let num = 1; num < sameInALine; num++) {
+    nextRow.push(`${num}-${num + 1}`)
   }
-  markInALineCenter.push(nextRow)
+  lane.push(nextRow.join(','))
 
   //center left to right diagonal -- left
-  nextRow = ''
-  for (let num = 1; num <= sameInALine; num++) {
-    nextRow += `${num + 1}-${num}`
+  nextRow = []
+  for (let num = 1; num < sameInALine; num++) {
+    nextRow.push(`${num + 1}-${num}`)
   }
-  markInALineCenter.push(nextRow)
-  nextRow = ''
+  lane.push(nextRow.join(','))
+  console.log('LeftToButtomRight:', lane)
 
-  return markInALineCenter
+  return lane
 }
+
 function getRightToLeftBottomHelper_temp(sameInALine) {
-  let markInALineCenter = []
+  let lane = []
 
   //center right to left diagonal
-  let nextRow = ''
+  let nextRow = []
   let rowNum = 1
   for (let num = sameInALine; num >= 1; num--) {
-    nextRow += `${rowNum}-${num}`
+    nextRow.push(`${rowNum}-${num}`)
     rowNum++
   }
-  markInALineCenter.push(nextRow)
+  lane.push(nextRow.join(','))
 
   //center right to left diagonal ++ right
-  nextRow = ''
+  nextRow = []
   rowNum = 2
   for (let num = sameInALine; num >= 1; num--) {
     if (rowNum > sameInALine) continue
-    nextRow += `${rowNum}-${num}`
+    nextRow.push(`${rowNum}-${num}`)
     rowNum++
   }
-  markInALineCenter.push(nextRow)
+  lane.push(nextRow.join(','))
 
   //center right to left diagonal ++ left
-  nextRow = ''
+  nextRow = []
   rowNum = 1
   for (let num = sameInALine; num >= 1; num--) {
     if (rowNum > sameInALine - 1) continue
-    nextRow += `${rowNum}-${num - 1}`
+    nextRow.push(`${rowNum}-${num - 1}`)
     rowNum++
   }
-  markInALineCenter.push(nextRow)
+  lane.push(nextRow.join(','))
 
-  return markInALineCenter
+  console.log('RightToLeft:', lane)
+  return lane
 }
 
+//ORIGINAL FUNCTIONS
 function getRowHelper(sameInALine) {
   let markInALineRow = []
   for (let row = 1; row <= sameInALine; row++) {
