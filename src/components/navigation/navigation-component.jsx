@@ -1,6 +1,6 @@
 import './navigation-component.css'
 import { useEffect, useState, useContext } from 'react'
-import { TableSizeContext, PartyNamesContext } from './../contexts/opoinment-contexts.jsx'
+import { TableSizeContext, PartyNamesContext, SameInALineContext } from './../contexts/opoinment-contexts.jsx'
 import Box from '@mui/material/Box'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
@@ -15,8 +15,11 @@ export const Navigation = () => {
   const [blueNameInput, setBlueNameInput] = useState(null)
   const [redNameInput, setRedNameInput] = useState(null)
   const [tableSize, setTableSize] = useState('')
+  const [winnerLane, setWinnerLane] = useState('')
+
   const { setSize } = useContext(TableSizeContext)
   const { parties, setParties } = useContext(PartyNamesContext)
+  const { setSameInALine } = useContext(SameInALineContext)
 
   useEffect(() => {
     if (!(blueNameInput || redNameInput)) return
@@ -34,21 +37,62 @@ export const Navigation = () => {
     return () => {}
   }, [tableSize])
 
+  useEffect(() => {
+    if (!winnerLane) return
+    console.log(winnerLane)
+    setSameInALine(winnerLane)
+    return () => {}
+  }, [winnerLane])
+
   const handleChange = (event) => {
     const sizeFromInput = event.target.value
     setTableSize(sizeFromInput)
+  }
+
+  const handleChangeTableSize = (event) => {
+    const lineToWinnNo = parseInt(event.target.value)
+
+    setWinnerLane(lineToWinnNo)
   }
 
   return (
     <nav>
       <h1>Tic-Toc</h1>
       <div className='user-menu-item'>
-        <Box component='form' sx={{ '& > :not(style)': { m: 1, width: '18ch' } }} noValidate autoComplete='off'>
+        <Box component='form' sx={{ '& > :not(style)': { m: 1, width: '30ch' } }} noValidate autoComplete='off'>
           <FormControl fullWidth>
-            <InputLabel id='demo-simple-select-label'>Size</InputLabel>
+            <InputLabel id='same-line-label'>Same in one line</InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
+              labelId='same-line-label'
+              id='same-line-label-select'
+              value={winnerLane}
+              sx={{
+                minWidth: '200px',
+                backgroundColor: '#154066;',
+                input: { color: 'white' },
+                label: {
+                  before: { width: '50px' },
+                  color: '#184fbd',
+                  fontWeight: '700',
+                  fontSize: '20px',
+                  '&.Mui-focused': {
+                    color: '#184fbd',
+                  },
+                },
+                fontSize: '10',
+              }}
+              label='Same in one line'
+              onChange={handleChangeTableSize}
+            >
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth>
+            <InputLabel id='table-size'>Size</InputLabel>
+            <Select
+              labelId='table-size'
+              id='table-size-select'
               value={tableSize}
               sx={{
                 backgroundColor: '#154066;',

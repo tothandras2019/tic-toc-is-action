@@ -1,4 +1,8 @@
 nav {
+  position: fixed;
+  width: 100%;
+  height: 20vh;
+  background-color: #100e1e;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -11,10 +15,14 @@ nav h1 {
 }
 nav .user-menu-item {
   width: 20%;
-  min-width: 500px;
+  width: 600px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
 }
 nav .user-menu-item form {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #154066;
 }/*# sourceMappingURL=navigation-component.css.map */

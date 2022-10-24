@@ -1,12 +1,14 @@
 import './table-component.css'
 import { useEffect, useState, useContext } from 'react'
-import { OpponentContexts, ActualTurnContext, TableSizeContext } from '../contexts/opoinment-contexts'
+import { OpponentContexts, ActualTurnContext, TableSizeContext, WinnerContext, SameInALineContext } from '../contexts/opoinment-contexts'
 
 import { Field } from '../field/field-component'
 import { WinnerHelper, WinnerHelper_temp } from '../../configs/config'
+import { SignalCellularNullSharp } from '@mui/icons-material'
 
 export const Table = ({}) => {
   const burnedTableSize = 3
+
   const [helper, setHelper] = useState('')
   const [helperTemp, setHelperTemp] = useState('')
 
@@ -23,10 +25,12 @@ export const Table = ({}) => {
   const { step, setStep } = useContext(OpponentContexts)
   const { turn, setTurn } = useContext(ActualTurnContext)
   const { size } = useContext(TableSizeContext)
+  const { winner, setWinner } = useContext(WinnerContext)
+  const { sameInALine } = useContext(SameInALineContext)
 
   useEffect(() => {
     setHelper(WinnerHelper(size))
-    setHelperTemp(WinnerHelper_temp(size))
+    // setHelperTemp(WinnerHelper_temp(size))
 
     return () => {}
   }, [size])
@@ -39,13 +43,13 @@ export const Table = ({}) => {
     }
 
     setTable(() => placeholder)
-    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 60px)` }))
+    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 40px)` }))
 
     return () => {}
   }, [size])
 
   useEffect(() => {
-    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 60px)`, backgroundColor: `${isOpointment ? '#0a1f40' : '#6a0606'}` }))
+    setStyle(() => ({ display: 'grid', gridTemplateColumns: `repeat(${size}, 40px)`, backgroundColor: `${isOpointment ? '#0a1f40' : '#6a0606'}` }))
   }, [isOpointment])
 
   useEffect(() => {
@@ -72,23 +76,27 @@ export const Table = ({}) => {
 
   useEffect(() => {
     setStep((prev) => ({ ...prev, blue: bluePartySteps }))
-    const isBlueWon = CheckSteps(bluePartySteps, helper)
-
-    const isBlueWon_temp = CheckSteps_temp(bluePartySteps, helperTemp)
-    console.log('Blue WON', isBlueWon_temp)
+    const isBlueWon = CheckSteps(bluePartySteps, helper, sameInALine)
+    setWinner((prev) => ({ ...prev, blue: isBlueWon }))
 
     return () => {}
   }, [bluePartySteps])
 
   useEffect(() => {
     setStep((prev) => ({ ...prev, red: redPartySteps }))
-    const isRedWon = CheckSteps(redPartySteps, helper)
-
-    const isRedWon_temp = CheckSteps_temp(redPartySteps, helperTemp)
-    console.log('Red Won', isRedWon_temp)
+    const isRedWon = CheckSteps(redPartySteps, helper, sameInALine)
+    setWinner((prev) => ({ ...prev, red: isRedWon }))
 
     return () => {}
   }, [redPartySteps])
+
+  useEffect(() => {
+    if (!winner) return
+    if (winner.red) console.log(winner)
+    if (winner.blue) console.log(winner)
+
+    return () => {}
+  }, [winner])
 
   const handleFieldClick = (event) => {
     const row = parseInt(event.target.dataset.row)
@@ -122,18 +130,26 @@ const CheckSteps_temp = (fields, help) => {
     })
 
     let str = ``
-    str = sorted.map(([r, c]) => `${r}-${c}`).join(',')
-    const isContains = help.some((lane) => lane === str)
+    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
+    // const isContains = help.some((lane) => lane === str)
 
-    const len = str.length
+    let isContains = null
+    const len = sorted.length
     const final = len - sameMarkInALane
+    // console.log(help, sorted)
     let lanes = []
-    for (let i = 0; i < final; i++) {
-      for (let j = 0; j < len; j++) {}
-    }
 
-    console.log(help)
-    console.log(str)
+    // console.log(sorted)
+    for (let start = 0; start < final; start++) {
+      const end = start + sameMarkInALane
+      let laneSteps = []
+      for (let val = start; val < end; val++) {
+        laneSteps.push(`${sorted[val][0]}-${sorted[val][1]}`)
+      }
+      // console.log(laneSteps.join(''))
+      isContains = help.some((lanes) => lanes.includes(laneSteps))
+      if (isContains) break
+    }
 
     return isContains
   }
@@ -189,11 +205,35 @@ const CheckSteps_temp = (fields, help) => {
   return rowContains || columnContains || leftToRightButtonContains || rigthToLeftButtonContains
 }
 
-const CheckSteps = (fields, help) => {
+const CheckSteps = (initField, help, sameMarkInALane) => {
   if (!help) return
 
+  console.log(sameMarkInALane)
+
+  const CheckLanesIncludes = (sorted) => {
+    let isContains = false
+    const len = sorted.length
+    const final = len - sameMarkInALane
+    let lanes = []
+
+    for (let start = 0; start <= final; start++) {
+      const end = start + sameMarkInALane
+      let laneSteps = []
+      for (let val = start; val < end; val++) {
+        laneSteps.push(`${sorted[val][0]}-${sorted[val][1]}`)
+      }
+      const laneStr = laneSteps.join('')
+      isContains = help.some((lanes) => lanes.includes(laneStr))
+      if (isContains) break
+    }
+
+    console.log(isContains)
+    return isContains
+  }
+
   const checkRow = (fields) => {
-    const sorted = fields.sort((a, b) => {
+    const copyFields = [...fields]
+    const sortedRO = copyFields.sort((a, b) => {
       if (a[0] < b[0]) return -1
       if (a[0] > b[0]) return 1
       if ((a[0] = b[0])) {
@@ -203,16 +243,12 @@ const CheckSteps = (fields, help) => {
       return 0
     })
 
-    let str = ``
-    let tmpStr = ''
-    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
-    tmpStr = sorted.map(([r, c]) => `${r}-${c}`).join(',')
-    const isContains = help.some((lane) => lane === str)
-
-    return isContains
+    return CheckLanesIncludes(sortedRO)
   }
+
   const checkColumn = (fields) => {
-    const sorted = fields.sort((a, b) => {
+    const copyFields = [...fields]
+    const sortedCL = copyFields.sort((a, b) => {
       if (a[1] < b[1]) return -1
       if (a[1] > b[1]) return 1
       if ((a[1] = b[1])) {
@@ -222,43 +258,52 @@ const CheckSteps = (fields, help) => {
       return 0
     })
 
-    let str = ``
-    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
-    const isContains = help.some((lane) => lane === str)
+    // console.log('Column', sortedCL)
 
-    return isContains
+    return CheckLanesIncludes(sortedCL)
   }
   const checkDiagonalLeftToRightButton = (fields) => {
-    const sorted = fields.sort((a, b) => {
+    const copyFields = [...fields]
+    const sortedDLR = copyFields.sort((a, b) => {
       if (a[0] < b[0] && a[1] < b[1]) return -1
       if (a[0] > b[0] && a[1] > b[1]) return 1
+      if (a[0] === b[0] && a[1] < b[1]) return -1
+      if (a[0] === b[0] && a[1] > b[1]) return 1
       return 0
     })
+    // const sortedDLR = copyFields.sort((a, b) => {
+    //   if (a[0] < b[0] && a[1] < b[1]) return -1
+    //   if (a[0] > b[0] && a[1] > b[1]) return 1
+    //   return 0
+    // })
 
-    let str = ``
-    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
-    const isContains = help.some((lane) => lane === str)
+    //console.log('DiagonalLeftToRight', sortedDLR)
 
-    return isContains
+    return CheckLanesIncludes(sortedDLR)
   }
   const checkDiagonalRightToLeftButton = (fields) => {
-    const sorted = fields.sort((a, b) => {
+    const copyFields = [...fields]
+    // const sortedDRL = copyFields.sort((a, b) => {
+    //   if (a[0] < b[0] && a[1] > b[1]) return -1
+    //   if (a[0] > b[0] && a[1] < b[1]) return 1
+    //   return 0
+    // })
+    const sortedDRL = copyFields.sort((a, b) => {
       if (a[0] < b[0] && a[1] > b[1]) return -1
       if (a[0] > b[0] && a[1] < b[1]) return 1
       return 0
     })
 
-    let str = ``
-    str = sorted.map(([r, c]) => `${r}-${c}`).join('')
-    const isContains = help.some((lane) => lane === str)
+    //console.log('DiagonalRightToLeft', sortedDRL)
 
-    return isContains
+    return CheckLanesIncludes(sortedDRL)
   }
 
-  const rowContains = checkRow(fields)
-  const columnContains = checkColumn(fields)
-  const leftToRightButtonContains = checkDiagonalLeftToRightButton(fields)
-  const rigthToLeftButtonContains = checkDiagonalRightToLeftButton(fields)
+  const rowContains = checkRow([...initField])
+  const columnContains = checkColumn([...initField])
+  // const leftToRightButtonContains = checkDiagonalLeftToRightButton([...initField])
+  // const rigthToLeftButtonContains = checkDiagonalRightToLeftButton([...initField])
 
-  return rowContains || columnContains || leftToRightButtonContains || rigthToLeftButtonContains
+  return rowContains || columnContains
+  // return rowContains || columnContains || leftToRightButtonContains || rigthToLeftButtonContains
 }

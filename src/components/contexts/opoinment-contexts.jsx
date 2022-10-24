@@ -21,6 +21,11 @@ export const TableSizeContextProvider = ({ children }) => {
   const [size, setSize] = useState(3)
   return <TableSizeContext.Provider value={{ size, setSize }}>{children}</TableSizeContext.Provider>
 }
+export const SameInALineContext = createContext(3)
+export const SameInALineContextProvider = ({ children }) => {
+  const [sameInALine, setSameInALine] = useState(3)
+  return <SameInALineContext.Provider value={{ sameInALine, setSameInALine }}>{children}</SameInALineContext.Provider>
+}
 
 export const PartyNamesContext = createContext({
   blueName: '',
@@ -35,8 +40,8 @@ export const PartyNamesContextProvider = ({ children }) => {
 }
 
 //values blue: won/loose/egal/''
-export const WinnerContext = createContext({ blue: '', red: '' })
+export const WinnerContext = createContext({ blue: false, red: false })
 export const WinnerContextProvider = ({ children }) => {
-  const [winner, setWinner] = useState({ blue: '', red: '' })
+  const [winner, setWinner] = useState({ blue: false, red: false })
   return <WinnerContext.Provider value={{ winner, setWinner }}>{children}</WinnerContext.Provider>
 }

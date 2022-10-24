@@ -1,6 +1,6 @@
 .table {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   margin: 0px;
   border: 1px solid rgb(39, 113, 179);
 }
@@ -9,7 +9,7 @@
   height: 100%;
   background-color: transparent;
   border: none;
-  font-size: 30px;
+  font-size: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,5 +31,5 @@
   }
 }
 .table button:hover {
-  background-color: rgb(21, 64, 102);
+  background-color: #154066;
 }/*# sourceMappingURL=field-component.css.map */

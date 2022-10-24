@@ -29,7 +29,6 @@ function getRowHelper_temp(sameInALine) {
     }
     lane.push(nextRow.join(','))
   }
-  console.log('row:', lane)
   return lane
 }
 
@@ -42,7 +41,6 @@ function getColumnHelper_temp(sameInALine) {
     }
     lane.push(nextRow.join(','))
   }
-  console.log('column:', lane)
   return lane
 }
 
@@ -69,7 +67,6 @@ function getLeftToButtomRightHelper_temp(sameInALine) {
     nextRow.push(`${num + 1}-${num}`)
   }
   lane.push(nextRow.join(','))
-  console.log('LeftToButtomRight:', lane)
 
   return lane
 }
@@ -106,7 +103,6 @@ function getRightToLeftBottomHelper_temp(sameInALine) {
   }
   lane.push(nextRow.join(','))
 
-  console.log('RightToLeft:', lane)
   return lane
 }
 

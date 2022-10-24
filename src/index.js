@@ -9,22 +9,25 @@ import {
   PartyNamesContextProvider,
   ActualTurnContextProvider,
   WinnerContextProvider,
+  SameInALineContextProvider,
 } from './components/contexts/opoinment-contexts'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <WinnerContextProvider>
-      <ActualTurnContextProvider>
-        <PartyNamesContextProvider>
-          <TableSizeContextProvider>
-            <OpponentContextsProvider>
-              <App />
-            </OpponentContextsProvider>
-          </TableSizeContextProvider>
-        </PartyNamesContextProvider>
-      </ActualTurnContextProvider>
-    </WinnerContextProvider>
+    <SameInALineContextProvider>
+      <WinnerContextProvider>
+        <ActualTurnContextProvider>
+          <PartyNamesContextProvider>
+            <TableSizeContextProvider>
+              <OpponentContextsProvider>
+                <App />
+              </OpponentContextsProvider>
+            </TableSizeContextProvider>
+          </PartyNamesContextProvider>
+        </ActualTurnContextProvider>
+      </WinnerContextProvider>
+    </SameInALineContextProvider>
   </React.StrictMode>,
 )
 
