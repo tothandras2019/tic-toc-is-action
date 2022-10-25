@@ -45,3 +45,14 @@ export const WinnerContextProvider = ({ children }) => {
   const [winner, setWinner] = useState({ blue: false, red: false })
   return <WinnerContext.Provider value={{ winner, setWinner }}>{children}</WinnerContext.Provider>
 }
+
+export const ResetContext = createContext(false)
+export const ResetContextProvider = ({ children }) => {
+  const [reset, setReset] = useState(false)
+  return <ResetContext.Provider value={{ reset, setReset }}>{children}</ResetContext.Provider>
+}
+export const HelperContext = createContext('')
+export const HelperContextProvider = ({ children }) => {
+  const [helper, setHelper] = useState('')
+  return <HelperContext.Provider value={{ helper, setHelper }}>{children}</HelperContext.Provider>
+}

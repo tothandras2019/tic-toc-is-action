@@ -39,17 +39,16 @@ export const Navigation = () => {
 
   useEffect(() => {
     if (!winnerLane) return
-    console.log(winnerLane)
     setSameInALine(winnerLane)
     return () => {}
   }, [winnerLane])
 
-  const handleChange = (event) => {
+  const handleSetTableSize = (event) => {
     const sizeFromInput = event.target.value
     setTableSize(sizeFromInput)
   }
 
-  const handleChangeTableSize = (event) => {
+  const handleSetWinnCondition = (event) => {
     const lineToWinnNo = parseInt(event.target.value)
 
     setWinnerLane(lineToWinnNo)
@@ -82,7 +81,7 @@ export const Navigation = () => {
                 fontSize: '10',
               }}
               label='Same in one line'
-              onChange={handleChangeTableSize}
+              onChange={handleSetWinnCondition}
             >
               <MenuItem value={3}>3</MenuItem>
               <MenuItem value={5}>5</MenuItem>
@@ -108,7 +107,7 @@ export const Navigation = () => {
                 fontSize: '10',
               }}
               label='Size'
-              onChange={handleChange}
+              onChange={handleSetTableSize}
             >
               <MenuItem value={3}>3</MenuItem>
               <MenuItem value={5}>5</MenuItem>
